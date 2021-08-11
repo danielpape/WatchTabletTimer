@@ -9,8 +9,41 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, World!")
-            .padding()
+        List(){
+            VStack(spacing: 8.0){
+                HStack{
+                    Text("P")
+                        .font(.headline)
+                        .frame(width: 32, height: 32)
+                        .background(Color.green)
+                        .foregroundColor(.black)
+                        .clipShape(Circle())
+                    Spacer()
+                    VStack(alignment: .leading){
+                        Text("Paracetamol")
+                            .font(.title3)
+                        Text("4 hours")
+                            .font(.subheadline)
+                    }
+                }
+                Button("Start Timer"){
+                    
+                }.padding()
+                .background(Color(.darkGray))
+                .clipShape(Capsule())
+            
+            }.padding(.vertical)
+            HStack{
+                Text("C")
+                    .font(.headline)
+                    .frame(width: 40, height: 40)
+                    .background(Color.red)
+                    .foregroundColor(.black)
+                    .clipShape(Circle())
+                Spacer()
+                Text("24 hours")
+            }
+        }.navigationTitle(Text("Medori"))
     }
 }
 
