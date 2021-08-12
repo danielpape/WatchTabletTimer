@@ -18,32 +18,32 @@ struct ContentView: View {
                         .background(Color.green)
                         .foregroundColor(.black)
                         .clipShape(Circle())
-                    Spacer()
+                        .padding(.trailing)
+//                    Spacer()
                     VStack(alignment: .leading){
                         Text("Paracetamol")
                             .font(.title3)
                         Text("4 hours")
                             .font(.subheadline)
                     }
+                    Spacer()
                 }
-                Button("Start Timer"){
-                    
-                }.padding()
-                .background(Color(.darkGray))
-                .clipShape(Capsule())
-            
+                Button(action: startTimer, label: {
+                    HStack{
+                        Spacer()
+                        Text("Start Timer")
+                        Spacer()
+                    }.padding()
+                    .background(Color(.darkGray))
+                    .clipShape(Capsule())
+                    .frame(maxWidth: .infinity)
+                }).buttonStyle(PlainButtonStyle())
             }.padding(.vertical)
-            HStack{
-                Text("C")
-                    .font(.headline)
-                    .frame(width: 40, height: 40)
-                    .background(Color.red)
-                    .foregroundColor(.black)
-                    .clipShape(Circle())
-                Spacer()
-                Text("24 hours")
-            }
         }.navigationTitle(Text("Medori"))
+    }
+    
+    func startTimer() {
+        print("timer started")
     }
 }
 
