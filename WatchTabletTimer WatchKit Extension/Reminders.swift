@@ -26,9 +26,9 @@ func requestPermission (){
     }
 }
 
-func scheduleNotification(item : Item, minutes: TimeInterval){
+func scheduleNotification(minutes: TimeInterval){
     let content = UNMutableNotificationContent()
-    content.title = "It is now safe to take \(item.name ?? "")"
+    content.title = "It is now safe to take Paracetamol"
 //        content.subtitle = "It is now safe to take \(tablet)"
     content.sound = UNNotificationSound.default
 

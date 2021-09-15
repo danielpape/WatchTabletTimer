@@ -8,57 +8,144 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @State private var active:Bool = false
-    
+    @State var active:Bool = false
+    let defaults = UserDefaults.standard
     var body: some View {
-        List(){
-            tabletCellView()
-            NavigationLink(String("Add"), destination: NewDataView())
-        }.navigationTitle(Text("Medori"))
+//        List(){
+        tabletCellView(active: active, initial: defaults.string(forKey: "initial") ?? "")
+        .navigationTitle(Text("Medori"))
+        .onAppear(){
+            requestPermission()
+//            let defaults = UserDefaults.standard
+//            defaults.set("", forKey: "initial")
+//            defaults.set(4, forKey: "hours")
+//            defaults.set(0, forKey: "minutes")
+        }
     }
 }
 
 struct tabletCellView: View {
     
+    @State var active: Bool
+    @State var initial: String
+        
     var body: some View {
         VStack(spacing: 8.0){
+            Spacer()
             HStack{
-                Text("P")
+                Text("\(initial)")
                     .font(.headline)
-                    .frame(width: 32, height: 32)
-                    .background(Color.green)
+                    .frame(width: 40, height: 40)
+                    .background(Color.black.opacity(0.2))
                     .foregroundColor(.black)
                     .clipShape(Circle())
                     .padding(.trailing)
 //                    Spacer()
                 VStack(alignment: .leading){
-                    Text("4 times")
-                    Text("4 hours")
-                        .font(.subheadline)
+                    if(active){
+                        Text("Do not take")
+                        .foregroundColor(.black)
+                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                    }else {
+                        Text("Safe to take")
+                        .foregroundColor(.black)
+                    }
+                    if(active){
+                        HStack{
+                            Text("safe at 13:13")
+                                .foregroundColor(.black)
+
+                        }
+                    }else {
+                        HStack{
+                            Image(systemName: "timer")
+                                .font(.headline)
+                                .foregroundColor(.black)
+                            Text("4 hours")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                        }
+                    }
                 }
                 Spacer()
-            }
-            Button(action: startTimer, label: {
+            }.padding(.vertical,24.0)
+            .padding(.horizontal, 8.0)
+            .background(active ? Color.red : Color.green)
+            .cornerRadius(32.0)
+            
+            Spacer()
+
+            if (active){
+                HStack{
+                    Button(action: cancelTimer, label: {
+                       HStack{
+                           Spacer()
+                           Text("Cancel")
+                               .foregroundColor(.white)
+                               .padding(.top, 4.0)
+                               .padding(.bottom, 4.0)
+
+                           Spacer()
+                       }.padding()
+                       .background(Color(.darkGray))
+                       .clipShape(Capsule())
+                       .frame(maxWidth: .infinity)
+                   }).buttonStyle(PlainButtonStyle())
+                }
+            }else{
+            
+            HStack{
+                NavigationLink(destination: NewDataView(initial: initial, hoursSelection: 7, minuteSelection: 32), label: {
                 HStack{
                     Spacer()
-                    Text("Start Timer")
+                    Text("Edit")
+                        .padding(.top, 4.0)
+                        .padding(.bottom, 4.0)
                     Spacer()
                 }.padding()
-                .background(Color(.darkGray))
                 .clipShape(Capsule())
-                .frame(maxWidth: .infinity)
             }).buttonStyle(PlainButtonStyle())
-        }.padding(.vertical)
+                Button(action: startTimer, label: {
+                   HStack{
+                       Spacer()
+                       Text("Start")
+                           .foregroundColor(.black)
+                           .padding(.top, 4.0)
+                           .padding(.bottom, 4.0)
+
+                       Spacer()
+                   }.padding()
+                   .background(Color.green)
+                   .clipShape(Capsule())
+                   .frame(maxWidth: .infinity)
+               }).buttonStyle(PlainButtonStyle())
+            }
+            }
+            
+        }.onAppear(){
+            initial = UserDefaults.standard.string(forKey: "initial") ?? "" 
+        }
+        
+    }
+    
+    func cancelTimer() {
+        cancelNotifications()
+        active.toggle()
+    }
+    func startTimer() {
+        print("timer started")
+        scheduleNotification(minutes: 1)
+        active.toggle()
     }
 }
 
-func startTimer() {
-    print("timer started")
-}
+
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(active: false)
+        ContentView(active: true)
     }
 }
