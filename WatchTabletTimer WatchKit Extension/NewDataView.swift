@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct NewDataView: View {
     
@@ -25,26 +26,25 @@ struct NewDataView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("Details")) {
+            Section(header: Text("Add a medication"), footer: Text("Set the time between doses & an initial\ne.g. P for Paracetamol")) {
                 HStack{
-                    Picker(selection: $initialSelection, label: Text("Initial"), content: {
-                        ForEach(0..<25){initial in
-                            Text("\(initialValues[initial])").tag(initial)
-                        }
-                    }).pickerStyle(WheelPickerStyle())
                     Picker(selection: $hoursSelection, label: Text("Hours"), content: {
-                        ForEach(0..<23){hour in
+                        ForEach(0..<24){hour in
                             Text("\(hour)").tag(hour)
                         }
                     }).pickerStyle(WheelPickerStyle())
                     Picker(selection: $minuteSelection, label: Text("Minutes"), content: {
                         ForEach(0..<60){min in
-                            Text("\(min)").tag(min)
+                            Text("\(String(format: "%02d", min))").tag(min)
                         }
                     }).pickerStyle(WheelPickerStyle())
-                }
+                    Picker(selection: $initialSelection, label: Text("Initial"), content: {
+                        ForEach(0..<25){initial in
+                            Text("\(initialValues[initial])").tag(initial)
+                        }
+                    }).pickerStyle(WheelPickerStyle())
+                }.frame(minHeight: 60)
             }
-            Section{
                 
                 Button(action: {
                     UserDefaults.standard.set(initialSelection, forKey: "initial")
@@ -54,11 +54,27 @@ struct NewDataView: View {
                     
                     
                 }) {
-                    Text("Save Medication")
-                        .foregroundColor(Color.blue)
-                }
-            }
+
+                        Text("Save Medication")
+                            .foregroundColor(.white)
+                            .padding(.top, 4.0)
+                            .padding(.bottom, 4.0)
+                    
+
+                    }.padding()
+                .buttonStyle(PlainButtonStyle())
+                .clipShape(Capsule())
+            
+            
+        }.onAppear(){
+            defaults.setValue(true, forKey: "onboardingSeen")
         }
+        
+                
+            
+                
+            
+        
     }
     
     

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var active:Bool = false
+    @State var showingAddView = false
     let defaults = UserDefaults.standard
     var body: some View {
 //        List(){
@@ -16,7 +17,12 @@ struct ContentView: View {
         .navigationTitle(Text("Medori"))
         .onAppear(){
             requestPermission()
-        }
+            if(defaults.bool(forKey: "onboardingSeen") == false){
+                showingAddView = true
+            }
+        }.sheet(isPresented: $showingAddView, content: {
+            NewDataView(initialSelection: 15, hoursSelection: 4, minuteSelection: 0)
+        })
     }
 }
 
@@ -35,11 +41,11 @@ struct tabletCellView: View {
             HStack{
                 Text("\(initialValues[initial])")
                     .font(.headline)
-                    .frame(width: 40, height: 40)
+                    .frame(width: 32, height: 32)
                     .background(Color.black.opacity(0.2))
                     .foregroundColor(.black)
                     .clipShape(Circle())
-                    .padding(.trailing)
+                    .padding(.trailing, 4.0)
 //                    Spacer()
                 VStack(alignment: .leading){
                     if(active){
@@ -136,7 +142,7 @@ struct tabletCellView: View {
     }
     func startTimer() {
         print("timer started")
-        scheduleNotification(minutes: 1)
+        scheduleNotification(minutes: TimeInterval((hours*60)+minutes))
         active.toggle()
     }
 }
