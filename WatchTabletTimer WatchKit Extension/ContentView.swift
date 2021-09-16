@@ -12,14 +12,10 @@ struct ContentView: View {
     let defaults = UserDefaults.standard
     var body: some View {
 //        List(){
-        tabletCellView(active: active, initial: defaults.string(forKey: "initial") ?? "")
+        tabletCellView(active: active, initial: defaults.integer(forKey: "initial"),hours: defaults.integer(forKey: "hours"), minutes: defaults.integer(forKey: "minutes"))
         .navigationTitle(Text("Medori"))
         .onAppear(){
             requestPermission()
-//            let defaults = UserDefaults.standard
-//            defaults.set("", forKey: "initial")
-//            defaults.set(4, forKey: "hours")
-//            defaults.set(0, forKey: "minutes")
         }
     }
 }
@@ -27,13 +23,17 @@ struct ContentView: View {
 struct tabletCellView: View {
     
     @State var active: Bool
-    @State var initial: String
+    @State var initial: Int
+    @State var hours: Int
+    @State var minutes: Int
+    
+    var initialValues: [String] = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
         
     var body: some View {
         VStack(spacing: 8.0){
             Spacer()
             HStack{
-                Text("\(initial)")
+                Text("\(initialValues[initial])")
                     .font(.headline)
                     .frame(width: 40, height: 40)
                     .background(Color.black.opacity(0.2))
@@ -52,7 +52,7 @@ struct tabletCellView: View {
                     }
                     if(active){
                         HStack{
-                            Text("safe at 13:13")
+                            Text("Safe at 13:13")
                                 .foregroundColor(.black)
 
                         }
@@ -61,7 +61,7 @@ struct tabletCellView: View {
                             Image(systemName: "timer")
                                 .font(.headline)
                                 .foregroundColor(.black)
-                            Text("4 hours")
+                            Text("\(hours > 0 ? "\(hours)hr\(hours == 1 ? "" : "s")" : "")\(hours > 0 && minutes >= 1 ? "," : "") \(minutes > 0 ? "\(minutes)m\(minutes == 1 ? "" : "s")" : "")")
                             .font(.headline)
                             .foregroundColor(.black)
                         }
@@ -95,7 +95,7 @@ struct tabletCellView: View {
             }else{
             
             HStack{
-                NavigationLink(destination: NewDataView(initial: initial, hoursSelection: 7, minuteSelection: 32), label: {
+                NavigationLink(destination: NewDataView(initialSelection: initial, hoursSelection: hours, minuteSelection: minutes), label: {
                 HStack{
                     Spacer()
                     Text("Edit")
@@ -123,7 +123,9 @@ struct tabletCellView: View {
             }
             
         }.onAppear(){
-            initial = UserDefaults.standard.string(forKey: "initial") ?? "" 
+            initial = UserDefaults.standard.integer(forKey: "initial")
+            hours = UserDefaults.standard.integer(forKey: "hours")
+            minutes = UserDefaults.standard.integer(forKey: "minutes")
         }
         
     }
