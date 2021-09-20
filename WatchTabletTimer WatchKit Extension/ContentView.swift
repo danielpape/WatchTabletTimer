@@ -13,7 +13,7 @@ struct ContentView: View {
     let defaults = UserDefaults.standard
     var body: some View {
 //        List(){
-        tabletCellView(active: active, cancelled: defaults.bool(forKey: "cancelled"), initial: defaults.integer(forKey: "initial"),hours: defaults.integer(forKey: "hours"), minutes: defaults.integer(forKey: "minutes"))
+        tabletCellView(active: active, cancelled: defaults.bool(forKey: "cancelled"), initial: defaults.string(forKey: "initial") ?? "",hours: defaults.integer(forKey: "hours"), minutes: defaults.integer(forKey: "minutes"))
         .navigationTitle(Text("Medori"))
         .onAppear(){
             requestPermission()
@@ -21,7 +21,7 @@ struct ContentView: View {
                 showingAddView = true
             }
         }.sheet(isPresented: $showingAddView, content: {
-            NewDataView(initialSelection: 15, hoursSelection: 4, minuteSelection: 0)
+            NewDataView(initialSelection: "B", hoursSelection: 4, minuteSelection: 0)
         })
     }
 }
@@ -30,7 +30,7 @@ struct tabletCellView: View {
     
     @State var active: Bool
     @State var cancelled: Bool
-    @State var initial: Int
+    @State var initial: String
     @State var hours: Int
     @State var minutes: Int
     
@@ -40,7 +40,7 @@ struct tabletCellView: View {
         VStack(spacing: 8.0){
             Spacer()
             HStack{
-                Text("\(initialValues[initial])")
+                Text("\(initial)")
                     .font(.headline)
                     .frame(width: 32, height: 32)
                     .background(Color.black.opacity(0.2))
@@ -68,7 +68,7 @@ struct tabletCellView: View {
                             Image(systemName: "timer")
                                 .font(.headline)
                                 .foregroundColor(.black)
-                            Text("\(hours)h \(minutes > 0 ? "\(minutes) m)" : "")")
+                            Text("\(hours)h \(minutes > 0 ? "\(minutes) m" : "")")
 //                            Text("\(hours > 0 ? "\(hours)hr\(hours == 1 ? "" : "s")" : "")\(hours > 0 && minutes >= 1 ? "," : "") \(minutes > 0 ? "\(minutes)m\(minutes == 1 ? "" : "s")" : "")")
                             .font(.headline)
                             .foregroundColor(.black)
@@ -131,7 +131,7 @@ struct tabletCellView: View {
             }
             
         }.onAppear(){
-            initial = UserDefaults.standard.integer(forKey: "initial")
+            initial = UserDefaults.standard.string(forKey: "initial") ?? ""
             hours = UserDefaults.standard.integer(forKey: "hours")
             minutes = UserDefaults.standard.integer(forKey: "minutes")
             cancelled = UserDefaults.standard.bool(forKey: "cancelled")

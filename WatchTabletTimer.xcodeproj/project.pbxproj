@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2918EB8726DE9E2300872716 /* Reminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2918EB8626DE9E2300872716 /* Reminders.swift */; };
 		2918EB8926DE9E7600872716 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2918EB8826DE9E7600872716 /* Item.swift */; };
+		292DF08626F8F5CC002B9936 /* MultiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292DF08526F8F5CC002B9936 /* MultiPicker.swift */; };
 		2954089C26C4630C000EFE9D /* WatchTabletTimer WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2954089B26C4630C000EFE9D /* WatchTabletTimer WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		295408A126C4630D000EFE9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 295408A026C4630D000EFE9D /* Assets.xcassets */; };
 		295408A826C4630D000EFE9D /* WatchTabletTimer WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 295408A726C4630D000EFE9D /* WatchTabletTimer WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -67,6 +68,7 @@
 /* Begin PBXFileReference section */
 		2918EB8626DE9E2300872716 /* Reminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminders.swift; sourceTree = "<group>"; };
 		2918EB8826DE9E7600872716 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		292DF08526F8F5CC002B9936 /* MultiPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiPicker.swift; sourceTree = "<group>"; };
 		2954089726C4630C000EFE9D /* Medori.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Medori.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2954089B26C4630C000EFE9D /* WatchTabletTimer WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WatchTabletTimer WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		295408A026C4630D000EFE9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				295408B226C4630D000EFE9D /* NotificationView.swift */,
 				295408B426C4630D000EFE9D /* ComplicationController.swift */,
 				29ACC36626F1DB0B00E8207E /* NewDataView.swift */,
+				292DF08526F8F5CC002B9936 /* MultiPicker.swift */,
 				2918EB8626DE9E2300872716 /* Reminders.swift */,
 				295408B626C4630D000EFE9D /* Assets.xcassets */,
 				295408BB26C4630D000EFE9D /* Info.plist */,
@@ -278,6 +281,7 @@
 			files = (
 				295408B126C4630D000EFE9D /* NotificationController.swift in Sources */,
 				295408AF26C4630D000EFE9D /* ContentView.swift in Sources */,
+				292DF08626F8F5CC002B9936 /* MultiPicker.swift in Sources */,
 				295408B526C4630D000EFE9D /* ComplicationController.swift in Sources */,
 				2918EB8726DE9E2300872716 /* Reminders.swift in Sources */,
 				2918EB8926DE9E7600872716 /* Item.swift in Sources */,

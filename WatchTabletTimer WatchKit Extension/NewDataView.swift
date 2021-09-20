@@ -14,7 +14,7 @@ struct NewDataView: View {
     
     let defaults = UserDefaults.standard
     
-    @State var initialSelection:Int
+    @State var initialSelection:String
     @State var hoursSelection: Int
     @State var minuteSelection: Int
     
@@ -23,30 +23,34 @@ struct NewDataView: View {
     var initialValues: [String] = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     @State var editing:Bool = false
     
-    
     var body: some View {
         Form {
-            Section(footer: Text("Set the time between doses & an initial\ne.g. P for Paracetamol")) {
-                HStack{
-                    Picker(selection: $hoursSelection, label: Text("Hours"), content: {
-                        ForEach(0..<24){hour in
-                            Text("\(hour)").tag(hour)
-                        }
-                    }).pickerStyle(WheelPickerStyle())
-                    Picker(selection: $minuteSelection, label: Text("Minutes"), content: {
-                        ForEach(0..<60){min in
-                            Text("\(String(format: "%02d", min))").tag(min)
-                        }
-                    }).pickerStyle(WheelPickerStyle())
-                    Picker(selection: $initialSelection, label: Text("Initial"), content: {
-                        ForEach(0..<25){initial in
-                            Text("\(initialValues[initial])").tag(initial)
-                        }
-                    }).pickerStyle(WheelPickerStyle())
-                }.frame(minHeight: 60)
-            }
+            Section(header: Text("Minimum Time between doses")) {
+                    Button("\(hoursSelection > 0 ? "\(hoursSelection) hour\(hoursSelection == 1 ? "" : "s")" : "")\(hoursSelection > 0 && minuteSelection >= 1 ? " ," : "") \(minuteSelection > 0 ? "\(minuteSelection) minute\(minuteSelection == 1 ? "" : "s") " : "")"){
+                        print("Set time")
+                    }
+                    
+//                    Picker(selection: $hoursSelection, label: Text("Hours"), content: {
+//                        ForEach(0..<24){hour in
+//                            Text("\(hour)").tag(hour)
+//                        }
+//                    }).pickerStyle(InlinePickerStyle())
+//                    Picker(selection: $minuteSelection, label: Text("Minutes"), content: {
+//                        ForEach(0..<60){min in
+//                            Text("\(String(format: "%02d", min))").tag(min)
+//                        }
+//                    }).pickerStyle(InlinePickerStyle())
+//                    Picker(selection: $initialSelection, label: Text("Initial"), content: {
+//                        ForEach(0..<25){initial in
+//                            Text("\(initialValues[initial])").tag(initial)
+//                        }
+//                    })
                 
-                Button(action: {
+            }
+            Section(header: Text("Initial")) {
+                TextField("Initial", text: $initialSelection)
+            }
+            Button(action: {
                     UserDefaults.standard.set(initialSelection, forKey: "initial")
                     UserDefaults.standard.set(hoursSelection, forKey: "hours")
                     UserDefaults.standard.set(minuteSelection, forKey: "minutes")
@@ -54,35 +58,21 @@ struct NewDataView: View {
                     
                     
                 }) {
-
-                        Text("Save Medication")
+                    Text("Save Medication")
                             .foregroundColor(.white)
                             .padding(.bottom, 4.0)
-                    
-
-                    }.padding()
+                }.padding()
                 .buttonStyle(PlainButtonStyle())
                 .clipShape(Capsule())
-            
-            
         }.onAppear(){
             defaults.setValue(true, forKey: "onboardingSeen")
-        }
-        
-                
-            
-                
-            
-        
+        }.navigationTitle(Text("Edit"))
     }
-    
-    
-    
 }
 
 struct NewDataView_Previews: PreviewProvider {
     static var previews: some View {
-        NewDataView(initialSelection: 0, hoursSelection: 4, minuteSelection: 0)
+        NewDataView(initialSelection: "B", hoursSelection: 4, minuteSelection: 0)
     }
 }
 
