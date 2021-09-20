@@ -26,7 +26,7 @@ struct NewDataView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("Add a medication"), footer: Text("Set the time between doses & an initial\ne.g. P for Paracetamol")) {
+            Section(footer: Text("Set the time between doses & an initial\ne.g. P for Paracetamol")) {
                 HStack{
                     Picker(selection: $hoursSelection, label: Text("Hours"), content: {
                         ForEach(0..<24){hour in
@@ -57,7 +57,6 @@ struct NewDataView: View {
 
                         Text("Save Medication")
                             .foregroundColor(.white)
-                            .padding(.top, 4.0)
                             .padding(.bottom, 4.0)
                     
 

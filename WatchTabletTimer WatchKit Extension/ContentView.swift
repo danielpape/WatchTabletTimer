@@ -13,7 +13,7 @@ struct ContentView: View {
     let defaults = UserDefaults.standard
     var body: some View {
 //        List(){
-        tabletCellView(active: active, initial: defaults.integer(forKey: "initial"),hours: defaults.integer(forKey: "hours"), minutes: defaults.integer(forKey: "minutes"))
+        tabletCellView(active: active, cancelled: defaults.bool(forKey: "cancelled"), initial: defaults.integer(forKey: "initial"),hours: defaults.integer(forKey: "hours"), minutes: defaults.integer(forKey: "minutes"))
         .navigationTitle(Text("Medori"))
         .onAppear(){
             requestPermission()
@@ -29,6 +29,7 @@ struct ContentView: View {
 struct tabletCellView: View {
     
     @State var active: Bool
+    @State var cancelled: Bool
     @State var initial: Int
     @State var hours: Int
     @State var minutes: Int
@@ -58,7 +59,7 @@ struct tabletCellView: View {
                     }
                     if(active){
                         HStack{
-                            Text("Safe at 13:13")
+                            Text("Safe at \(safeToTake(int: hours*60 + minutes))")
                                 .foregroundColor(.black)
 
                         }
@@ -67,7 +68,8 @@ struct tabletCellView: View {
                             Image(systemName: "timer")
                                 .font(.headline)
                                 .foregroundColor(.black)
-                            Text("\(hours > 0 ? "\(hours)hr\(hours == 1 ? "" : "s")" : "")\(hours > 0 && minutes >= 1 ? "," : "") \(minutes > 0 ? "\(minutes)m\(minutes == 1 ? "" : "s")" : "")")
+                            Text("\(hours)h \(minutes > 0 ? "\(minutes) m)" : "")")
+//                            Text("\(hours > 0 ? "\(hours)hr\(hours == 1 ? "" : "s")" : "")\(hours > 0 && minutes >= 1 ? "," : "") \(minutes > 0 ? "\(minutes)m\(minutes == 1 ? "" : "s")" : "")")
                             .font(.headline)
                             .foregroundColor(.black)
                         }
@@ -132,18 +134,47 @@ struct tabletCellView: View {
             initial = UserDefaults.standard.integer(forKey: "initial")
             hours = UserDefaults.standard.integer(forKey: "hours")
             minutes = UserDefaults.standard.integer(forKey: "minutes")
+            cancelled = UserDefaults.standard.bool(forKey: "cancelled")
+            checkIfTimerIsActive()
         }
         
     }
     
     func cancelTimer() {
         cancelNotifications()
+        UserDefaults.standard.setValue(true, forKey: "cancelled")
         active.toggle()
     }
     func startTimer() {
         print("timer started")
         scheduleNotification(minutes: TimeInterval((hours*60)+minutes))
+        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "lastTriggered")
+        UserDefaults.standard.setValue(false, forKey: "cancelled")
         active.toggle()
+    }
+    
+    func safeToTake(int:Int) -> String {
+        let lastTriggered = Date(timeIntervalSince1970: UserDefaults.standard.double(forKey: "lastTriggered"))
+        let safeToTakeTime = lastTriggered.addingTimeInterval(TimeInterval(hours*60*60)+TimeInterval(minutes*60)) 
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: safeToTakeTime)
+    }
+    
+    func checkIfTimerIsActive() {
+        
+        let timeStamp = Date(timeIntervalSince1970: UserDefaults.standard.double(forKey: "lastTriggered"))
+        
+        if(UserDefaults.standard.bool(forKey: "cancelled") == true){
+            active = false
+        }
+        
+        let totalMinutes = Double(((hours*60) + minutes) * 60)
+        let remainingMinutes = (totalMinutes) - Date().timeIntervalSince(timeStamp)
+        let minutesSinceLastTriggered = Date().timeIntervalSince(timeStamp)
+        if (remainingMinutes > minutesSinceLastTriggered && cancelled == false){
+            active = true
+        }
     }
 }
 
