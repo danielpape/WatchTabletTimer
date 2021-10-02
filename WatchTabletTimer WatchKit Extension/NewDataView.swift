@@ -24,8 +24,10 @@ struct NewDataView: View {
     @State var editing:Bool = false
     
     var body: some View {
-        Form {
-            Section(header: Text("Minimum Time between doses")) {
+        VStack{
+            TabView {
+            VStack{
+                Text("Time")
                     Button("\(hoursSelection > 0 ? "\(hoursSelection) hour\(hoursSelection == 1 ? "" : "s")" : "")\(hoursSelection > 0 && minuteSelection >= 1 ? " ," : "") \(minuteSelection > 0 ? "\(minuteSelection) minute\(minuteSelection == 1 ? "" : "s") " : "")"){
                         print("Set time")
                     }
@@ -47,8 +49,10 @@ struct NewDataView: View {
 //                    })
                 
             }
-            Section(header: Text("Initial")) {
+                VStack{
+                    Text("Initial")
                 TextField("Initial", text: $initialSelection)
+            }.tabViewStyle(.page)
             }
             Button(action: {
                     UserDefaults.standard.set(initialSelection, forKey: "initial")
